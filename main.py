@@ -2,9 +2,7 @@ from decouple import config
 from aiogram import Dispatcher, Bot, executor, types
 import logging
 
-token = config('TOKEN')
-bot = Bot(token=token)
-dp = Dispatcher(bot)
+
 
 
 @dp.message_handler(commands=['start'])
