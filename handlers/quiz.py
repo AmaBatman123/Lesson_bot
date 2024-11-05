@@ -1,6 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import bot
+import os
 
 async def quiz_1(message: types.Message):
     keyboard = InlineKeyboardMarkup(resize_keyboard=True)
@@ -28,7 +29,7 @@ async def quiz_1(message: types.Message):
 async def quiz_2(call: types.CallbackQuery):
     keyboard = InlineKeyboardMarkup(resize_keyboard=True)
 
-    button = InlineKeyboardButton('Следущее', callback_data='quiz_2')
+    button = InlineKeyboardButton('Следущее', callback_data='quiz_3')
 
     keyboard.add(button)
 
@@ -48,6 +49,39 @@ async def quiz_2(call: types.CallbackQuery):
         reply_markup=keyboard
     )
 
+async def quiz_3(call: types.CallbackQuery):
+    keyboard = InlineKeyboardMarkup(resize_keyboard=True)
+
+    # button = InlineKeyboardButton('Финал', callback_data='quiz_3')
+
+    # keyboard.add(button)
+
+    question = 'Choose the right answer'
+
+    # Отправка фото для викторины
+    quiz_photo = 'https://cf2.ppt-online.org/files2/slide/e/ewWRPB0ViI4m5kMjq1hCcUgpLN9uKn6sOE7r23/slide-31.jpg'
+    await bot.send_photo(
+        chat_id=call.from_user.id,
+        photo=quiz_photo,
+        caption='Вопрос к викторине'
+    )
+
+    answer = ['1', '2', '3', '4']
+
+    await bot.send_poll(
+        chat_id=call.from_user.id,
+        question=question,
+        options=answer,
+        is_anonymous=False,
+        type='quiz',
+        correct_option_id=2,
+        explanation='Неверно',
+        open_period=60,
+        reply_markup=keyboard
+    )
+
 def register_handler_quiz(dp: Dispatcher):
     dp.register_message_handler(quiz_1, commands=['quiz'])
     dp.register_callback_query_handler(quiz_2, text='quiz_2')
+    dp.register_callback_query_handler(quiz_3, text='quiz_3')
+
