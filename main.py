@@ -1,10 +1,11 @@
 from config import bot, dp
 from aiogram import executor, types
 import logging
-from handlers import commands, quiz
+from handlers import commands, quiz, game_dice
 
 commands.register_commands(dp)
 quiz.register_handler_quiz(dp)
+game_dice.register_handlers(dp)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
