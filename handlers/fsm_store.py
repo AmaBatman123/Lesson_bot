@@ -51,7 +51,7 @@ async def load_photo(message: types.Message, state: FSMContext):
 
     await state.finish()
     await message.answer_photo(photo=data['photo'],
-                               caption=f'Название - {data['name']} \n'
+                               caption=f'Название - {data["name"]} \n'
                                        f'Размеры - {data["size"]} \n'
                                        f'Категория - {data["category"]} \n'
                                        f'Цена - {data["price"]} \n')
@@ -67,8 +67,9 @@ async def cancel_fsm(message: types.Message, state: FSMContext):
 
 def reg_handler_fsm_store(dp: Dispatcher):
     dp.register_message_handler(cancel_fsm, Text(equals='Отмена', ignore_case=True), state="*")
-    dp.register_message_handler(start_fsm, commands=['start'])
+    dp.register_message_handler(start_fsm, commands=['store'])
     dp.register_message_handler(load_name, state=fsm_store.name)
     dp.register_message_handler(load_size, state=fsm_store.size)
+    dp.register_message_handler(load_category, state=fsm_store.category)
     dp.register_message_handler(load_price, state=fsm_store.price)
     dp.register_message_handler(load_photo, state=fsm_store.photo, content_types=['photo'])
