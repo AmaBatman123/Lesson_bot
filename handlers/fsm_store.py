@@ -3,7 +3,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from buttons import cancel
+from buttons import cancel, sizes_kb
 from aiogram.types import ReplyKeyboardRemove
 
 class fsm_store(StatesGroup):
@@ -22,7 +22,7 @@ async def load_name(message: types.Message, state: FSMContext):
         data['name'] = message.text
 
     await fsm_store.next()
-    await message.answer('Определите размеры товара: ')
+    await message.answer('Выберите размер:', reply_markup=sizes_kb)
 
 async def load_size(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
@@ -52,7 +52,7 @@ async def load_photo(message: types.Message, state: FSMContext):
     await state.finish()
     await message.answer_photo(photo=data['photo'],
                                caption=f'Название - {data["name"]} \n'
-                                       f'Размеры - {data["size"]} \n'
+                                       f'Размер - {data["size"]} \n'
                                        f'Категория - {data["category"]} \n'
                                        f'Цена - {data["price"]} \n')
 
