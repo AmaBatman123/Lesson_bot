@@ -3,7 +3,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from buttons import cancel, sizes_kb
+from buttons import cancel, sizes_kb, confirm_kb
 from aiogram.types import ReplyKeyboardRemove
 
 class fsm_store(StatesGroup):
@@ -29,21 +29,21 @@ async def load_size(message: types.Message, state: FSMContext):
         data['size'] = message.text
 
     await fsm_store.next()
-    await message.answer('Определите категорию товара: ')
+    await message.answer('Определите категорию товара: ', reply_markup=cancel)
 
 async def load_category(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['category'] = message.text
 
     await fsm_store.next()
-    await message.answer('Установите цену на товар: ')
+    await message.answer('Установите цену на товар: ', reply_markup=cancel)
 
 async def load_price(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['price'] = message.text
 
     await fsm_store.next()
-    await message.answer('Отправьте фото товара: ')
+    await message.answer('Отправьте фото товара: ', reply_markup=cancel)
 
 async def load_photo(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
@@ -56,6 +56,17 @@ async def load_photo(message: types.Message, state: FSMContext):
                                        f'Категория - {data["category"]} \n'
                                        f'Цена - {data["price"]} \n')
 
+    await message.answer('Верны ли данные?', reply_markup=confirm_kb)
+
+async def confirm_fsm(message: types.Message, state: FSMContext):
+    if message.text == 'Да':
+        await state.finish()
+        await message.answer('Данные сохранены.', reply_markup=ReplyKeyboardRemove())
+    elif message.text == 'Нет':
+        await state.finish()
+        await message.answer('Отменено', reply_markup=ReplyKeyboardRemove())
+
+
 async def cancel_fsm(message: types.Message, state: FSMContext):
     current_state = await state.get_state()
 
@@ -65,8 +76,10 @@ async def cancel_fsm(message: types.Message, state: FSMContext):
         await state.finish()
         await message.answer('Отменено', reply_markup=kb_remove)
 
+
 def reg_handler_fsm_store(dp: Dispatcher):
     dp.register_message_handler(cancel_fsm, Text(equals='Отмена', ignore_case=True), state="*")
+    dp.register_message_handler(confirm_fsm, Text(equals=['Да', 'Нет']), state="*")
     dp.register_message_handler(start_fsm, commands=['store'])
     dp.register_message_handler(load_name, state=fsm_store.name)
     dp.register_message_handler(load_size, state=fsm_store.size)
