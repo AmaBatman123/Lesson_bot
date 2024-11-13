@@ -1,12 +1,13 @@
 from config import bot, dp
 from aiogram import executor, types
-from handlers import commands, quiz, game_dice, fsm_store
+from handlers import commands, quiz, game_dice, fsm_store, message
 import logging
 
 commands.register_commands(dp)
 quiz.register_handler_quiz(dp)
 game_dice.register_handlers(dp)
 fsm_store.reg_handler_fsm_store(dp)
+message.register_message_handler(dp)
 
 chat_id = '372040467'
 
