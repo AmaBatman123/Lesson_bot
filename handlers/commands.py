@@ -16,7 +16,12 @@ async def send_mem(message: types.Message):
         await message.answer_photo(photo=image,
                                    caption='Мем')
 
+async def send_user_id(message: types.Message):
+    user_id = message.from_user.id
+    await message.answer(f"Ваш ID: {user_id}")
+
 
 def register_commands(dp: Dispatcher):
     dp.register_message_handler(start, commands=["start"])
     dp.register_message_handler(send_mem, commands=["mem"])
+    dp.register_message_handler(send_user_id, commands=["user_id"])
