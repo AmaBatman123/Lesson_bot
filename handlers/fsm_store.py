@@ -28,6 +28,14 @@ async def load_name(message: types.Message, state: FSMContext):
     await message.answer('Введите артикул товара:', reply_markup=cancel)
 
 async def load_product_id(message: types.Message, state: FSMContext):
+    if not message.text.isdigit():
+        await message.answer('Артикул должен быть числом!')
+        return
+
+    if not (3 <= len(message.text) <= 10):
+        await message.answer('Артикул содержать быть от 3 до 10 символов')
+        return
+
     async with state.proxy() as data:
         data['product_id'] = message.text
 
