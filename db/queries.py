@@ -3,7 +3,7 @@ CREATE_TABLE_STORE = """
     CREATE TABLE IF NOT EXISTS store (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
-    productid TEXT,
+    product_id INTEGER,
     size TEXT,
     category TEXT,
     price INTEGER,
@@ -13,20 +13,20 @@ CREATE_TABLE_STORE = """
 )"""
 
 INSERT_STORE = """
-    INSERT INTO store (name, productid, size, category, price, info_product, collection, photo)
+    INSERT INTO store (name, product_id, size, category, price, info_product, collection, photo)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 """
 
 CREATE_TABLE_PRODUCTS = """
 CREATE TABLE IF NOT EXISTS products_details (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    productid INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
     category TEXT NOT NULL,
     infoproduct TEXT NOT NULL
 )"""
 
 INSERT_PRODUCTS = """
-    INSERT INTO products_details (productid, category, infoproduct)
+    INSERT INTO products_details (product_id, category, infoproduct)
     VALUES (?, ?, ?)
 """
 

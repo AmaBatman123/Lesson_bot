@@ -91,7 +91,7 @@ async def confirm_fsm(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             await db_main.sql_insert_store(
                 name=data['name'],
-                productid=data['product_id'],
+                product_id=data['product_id'],
                 size=data['size'],
                 category=data['category'],
                 price=data['price'],
@@ -100,7 +100,7 @@ async def confirm_fsm(message: types.Message, state: FSMContext):
                 photo=data['photo']
             )
             await db_main.sql_insert_products(
-                productid=data['product_id'],
+                product_id=data['product_id'],
                 category=data['category'],
                 info_product=data['info_products'],
             )
