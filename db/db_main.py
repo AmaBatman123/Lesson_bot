@@ -60,3 +60,28 @@ async def delete_products(product_id):
     conn.execute('DELETE FROM STORE WHERE product_id = ?', (product_id,))
     conn.commit()
     conn.close()
+
+    # CRUD - Update
+#===========================================================================
+
+async def update_product_field(product_id, field_name, new_value):
+    store_table = ["name", "size", "category", "price", "photo"]
+    store_detail = ["category", "info_product"]
+
+    conn = await get_db_connection()
+    try:
+        if field_name in store_table:
+            query = f'UPDATE STORE SET {field_name} = ? WHERE product_id = ?'
+        elif field_name in store_detail:
+            query = f'UPDATE store_details SET {field_name} = ? WHERE product_id = ?'
+        else:
+            raise ValueError(f"Не такого поля {field_name}")
+
+        conn.execute(query, (new_value, product_id))
+
+        conn.commit()
+    except sqlite3.OperationalError as e:
+        print(f"Ошибка - {e}")
+    finally:
+        conn.close()
+

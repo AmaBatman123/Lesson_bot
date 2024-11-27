@@ -1,6 +1,9 @@
 from config import bot, dp
 from aiogram import executor, types
-from handlers import commands, quiz, game_dice, fsm_store, message, send_products, webapp, admin_group, send_and_delete_products
+from handlers import (commands, quiz, game_dice, fsm_store,
+                      message, send_products, webapp,
+                      admin_group, send_and_delete_products,
+                      edit_products)
 import logging
 from db import db_main
 
@@ -11,6 +14,7 @@ game_dice.register_handlers(dp)
 webapp.register_webapp(dp)
 send_and_delete_products.register_handlers(dp)
 fsm_store.reg_handler_fsm_store(dp)
+edit_products.register_edit_handler(dp)
 
 admin_group.register_admin_handler(dp)
 message.register_message_handler(dp)
